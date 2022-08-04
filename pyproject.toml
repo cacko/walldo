@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "wallies-macos"
+version = "0.1.0"
+description = ""
+authors = ["cacko <alex@cacko.net>"]
+
+
+[[tool.poetry.source]]
+name = "cacko"
+secondary = true
+url = "https://pypi.cacko.net/simple/"
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rumps = "^0.5.7"
+requests = "^2.28.1"
+dataclasses-json = "^0.5.7"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^5.0.4"
+autopep8 = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
