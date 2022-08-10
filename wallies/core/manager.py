@@ -2,6 +2,12 @@ import logging
 from queue import Queue
 import asyncio
 from wallies.core.models import Command
+from wallies.core.macos import get_screen, set_wallpapper
+from wallies.api.artwork import ArtworkFile
+from wallies.api.client import Client
+from wallies.api.models import Artwork
+from random import choice
+
 
 class ManagerMeta(type):
 
@@ -19,11 +25,12 @@ class Manager(object, metaclass=ManagerMeta):
     eventLoop: asyncio.AbstractEventLoop = None
     app_callback = None
     player_callback = None
-    api = None
+    api: Client = None
     __running = False
 
     def __init__(self) -> None:
         self.eventLoop = asyncio.new_event_loop()
+        self.api = Client()
         self.commander = Queue()
 
     def start(self, app_callback):
@@ -51,4 +58,12 @@ class Manager(object, metaclass=ManagerMeta):
             logging.exception(e)
 
     async def __random(self):
-        pass
+        artworks = self.api.artworks()
+        for screen in get_screen():
+            raw_src = choice(artworks).raw_src
+            artwork_file = ArtworkFile(raw_src)
+            artwork_path = artwork_file.path
+            res, err = set_wallpapper(screen=screen, image_path=artwork_path)
+            logging.debug(res)
+            if err:
+                logging.error(err)

@@ -2,7 +2,7 @@ from enum import Enum
 from dataclasses_json import Undefined, dataclass_json
 from dataclasses import dataclass
 
-API_HOST = "https://wallies.cacko.net/api/"
+API_HOST = "https://wallies.cacko.net/api"
 
 class ENDPOINT(Enum):
     ARTWORKS = "artworks.json"

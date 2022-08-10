@@ -16,7 +16,6 @@ OPTIONS = {
         'rumps',
         'dataclasses_json',
         'requests',
-        'cachable',
         'PIL',
         'appdir',
         'click',
