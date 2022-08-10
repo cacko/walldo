@@ -18,8 +18,8 @@ OPTIONS = {
         'requests',
         'appdir',
         'click',
-        "PyYAML",
-        
+        "yaml",
+
     ],
 }
 setup(
