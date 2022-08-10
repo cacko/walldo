@@ -1,4 +1,3 @@
-from re import I
 from rumps import MenuItem
 from pathlib import Path
 from enum import Enum

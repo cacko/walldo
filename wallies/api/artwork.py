@@ -1,7 +1,7 @@
 import requests
 from wallies.core.string import string_hash
 from pathlib import Path
-from wallies.config import Config
+from wallies.config import app_config
 
 
 class ArtworkFile:
@@ -17,7 +17,7 @@ class ArtworkFile:
 
     @property
     def path(self) -> Path:
-        pth: Path = Config.cache_dir / self.__filename
+        pth: Path = app_config.cache_dir / self.__filename
         if not pth.exists():
             resp = requests.get(self.__url)
             content = resp.content

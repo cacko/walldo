@@ -1,7 +1,7 @@
 import logging
 from os import environ
 from wallies.ui.app import WalliesApp
-from wallies.config import Config as app_config
+from wallies.config import app_config
 
 __name__ = "Wallies"
 __version__ = "0.1.0"
@@ -17,6 +17,7 @@ def start():
     try:
         app = WalliesApp()
         threads = app.threads
+        print(app_config.get("ui.interval"))
         app.run()
     except KeyboardInterrupt:
         for th in threads:

@@ -10,10 +10,7 @@ except ImportError:
 DEFAULT_CONFIG = {
     "ui": {
         "interval": 60,
-        "category": "minimal"
-    },
-    "storage": {
-        "redis": "redis://127.0.0.1/4"
+        "category": "minimal",
     }
 }
 
@@ -48,15 +45,37 @@ class ConfigMeta(type):
     def get(cls, name, *args, **kwargs):
         return cls().getvar(name, *args, **kwargs)
 
+    def set(cls, name, value, *args, **kwargs):
+        return cls().setvar(name, value, *args, **kwargs)
 
-class Config(object, metaclass=ConfigMeta):
+
+class app_config(object, metaclass=ConfigMeta):
 
     __dict: dict = {}
 
     def __init__(self, *args, **kwargs):
         if not __class__.config_path.exists():
-            __class__.config_path.write_text(dump(DEFAULT_CONFIG, Dumper=Dumper))
-        self.__dict = load(__class__.config_path.read_text(), Loader=Loader)
+            __class__.config_path.write_text(
+                dump(DEFAULT_CONFIG, Dumper=Dumper))
+            self.__dict = DEFAULT_CONFIG
+        else:
+            self.__dict = load(
+                __class__.config_path.read_text(), Loader=Loader)
 
-    def getvar(self, name, *args, **kwargs):
-        return self.__dict.get(name, *args, **kwargs)
+    def getvar(self, name, root=None, *args, **kwargs):
+        if not root:
+            root = self.__dict
+        if '.' in name:
+            rk, k = name.split('.', 1)
+            return self.getvar(k, root=root.get(rk, {}), *args, **kwargs)
+        else:
+            return root.get(name, *args, **kwargs)
+
+    def setvar(self, name, value, root=None, *args, **kwargs):
+        if not root:
+            root = self.__dict
+        if '.' in name:
+            rk, k = name.split('.', 1)
+            return self.setvar(k, value, root=root.get(rk, {}), *args, **kwargs)
+        else:
+            return root.update(name, value, *args, **kwargs)
