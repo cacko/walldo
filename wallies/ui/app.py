@@ -33,7 +33,7 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
             ],
             icon=Icon.APP.value,
             quit_button=None,
-            template=False
+            template=True
         )
         self.menu.setAutoenablesItems = False
         self.manager = Manager()
