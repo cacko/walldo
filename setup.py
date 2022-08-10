@@ -16,9 +16,10 @@ OPTIONS = {
         'rumps',
         'dataclasses_json',
         'requests',
-        'PIL',
         'appdir',
         'click',
+        "PyYAML",
+        
     ],
 }
 setup(
