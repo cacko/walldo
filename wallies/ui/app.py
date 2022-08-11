@@ -1,8 +1,10 @@
 from traceback import print_exc
 import rumps
+from ..core.scheduler import Scheduler
 from wallies.core.thread import StoppableThread
 from wallies.core.manager import Manager
-from wallies.ui.models import ActionItem, Icon, Label
+from .menu.interval import IntervalList, Option
+from wallies.ui.models import INTERVAL_OPTIONS, ActionItem, Icon, Label
 from wallies.core.models import Command
 
 class WalliesAppMeta(type):
@@ -22,12 +24,14 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
 
     manager: Manager = None
     __threads = []
+    __intervals: IntervalList = None
 
     def __init__(self):
         super(WalliesApp, self).__init__(
             name="Wallies",
             menu=[
                 ActionItem.random,
+                ActionItem.interval,
                 None,
                 ActionItem.quit
             ],
@@ -36,10 +40,16 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
             template=True
         )
         self.menu.setAutoenablesItems = False
+        self.__intervals = IntervalList(self, Label.INTERVAL.value)
         self.manager = Manager()
         t = StoppableThread(target=self.manager.start, args=[self.onManagerResult])
         t.start()
         self.__threads.append(t)
+        self.__threads.append(Scheduler.start(self.manager))
+        self.__intervals.update(
+            [Option(text=t,value=v,icon=i) for v,t,i in INTERVAL_OPTIONS],
+            self.onIntervalItem
+        )
     
     @property
     def threads(self):
@@ -50,6 +60,8 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
     def onRandom(self, sender):
         self.manager.commander.put_nowait((Command.RANDOM, None))
 
+    def onIntervalItem(self, sender):
+        print(sender)
 
     @rumps.clicked(Label.QUIT.value)
     def onQuit(self, sender):

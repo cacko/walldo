@@ -6,12 +6,18 @@ from enum import Enum
 class Label(Enum):
     QUIT = 'Quit'
     RANDOM = 'Random'
+    INTERVAL = 'Auto change'
 
 
 class Icon(Enum):
     QUIT = 'quit.png'
     RANDOM = 'random.png'
     APP = 'app.png'
+    INTERVAL = "interval.png"
+    INTERVAL_10 = "10.png"
+    INTERVAL_30 = "30.png"
+    INTERVAL_60 = "60.png"
+    INTERVAL_1440 = "1440.png"
 
     def __new__(cls, *args):
         icons_path: Path = Path(__file__).parent / "icons"
@@ -19,6 +25,14 @@ class Icon(Enum):
         obj = object.__new__(cls)
         obj._value_ = value.as_posix()
         return obj
+
+
+INTERVAL_OPTIONS = [
+    (10, '10 minutes', Icon.INTERVAL_10),
+    (30, '30 minutes', Icon.INTERVAL_30),
+    (60, 'Each hour', Icon.INTERVAL_60),
+    (1440, 'Every day', Icon.INTERVAL_1440),
+]
 
 
 class ActionItemMeta(type):
@@ -37,6 +51,10 @@ class ActionItemMeta(type):
     @property
     def random(cls) -> 'ActionItem':
         return cls("random", Label.RANDOM.value, icon=Icon.RANDOM.value)
+
+    @property
+    def interval(cls) -> 'ActionItem':
+        return cls("interval", Label.INTERVAL.value, icon=Icon.INTERVAL.value)
 
 
 class ActionItem(MenuItem, metaclass=ActionItemMeta):
