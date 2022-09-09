@@ -1,0 +1,4 @@
+name: Wallies
+channels:
+  - conda-forge
+prefix: /Users/jago/miniforge3/envs/Wallies
