@@ -10,21 +10,14 @@ class Label(Enum):
 
 
 class Icon(Enum):
-    QUIT = 'quit.png'
-    RANDOM = 'random.png'
-    APP = 'app.png'
-    INTERVAL = "interval.png"
-    INTERVAL_10 = "10.png"
-    INTERVAL_30 = "30.png"
-    INTERVAL_60 = "60.png"
-    INTERVAL_1440 = "1440.png"
-
-    def __new__(cls, *args):
-        icons_path: Path = Path(__file__).parent / "icons"
-        value = icons_path / args[0]
-        obj = object.__new__(cls)
-        obj._value_ = value.as_posix()
-        return obj
+    QUIT = 'power'
+    RANDOM = 'dice'
+    APP = 'photo.stack'
+    INTERVAL = "timer"
+    INTERVAL_10 = "10.circle"
+    INTERVAL_30 = "30.circle"
+    INTERVAL_60 = "hourglass.circle"
+    INTERVAL_1440 = "calendar.circle"
 
 
 INTERVAL_OPTIONS = [

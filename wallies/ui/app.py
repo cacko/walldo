@@ -87,7 +87,6 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
             try:
                 th.stop()
             except Exception as e:
-                print_exc(e)
                 pass
         try:
             rumps.quit_application()
