@@ -17,6 +17,11 @@ def version():
     return __version__
 
 
+def resolve_libs(libs):
+    env = Path(sys.executable)
+    root = env.parent.parent / "lib"
+    return [(root / f).as_posix() for f in libs]
+
 
 APP = ['app.py']
 DATA_FILES = []
@@ -35,8 +40,16 @@ OPTIONS = {
         'appdir',
         'click',
         "yaml",
-
     ],
+    "frameworks": resolve_libs(
+        [
+            "libffi.8.dylib",
+            "libtcl8.6.dylib",
+            "libtk8.6.dylib",
+            "libssl.3.dylib",
+            "libcrypto.3.dylib",
+        ]
+    ),
 }
 setup(
     app=APP,
