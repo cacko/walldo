@@ -52,6 +52,7 @@ class Scheduler(StoppableThread, metaclass=SchedulerMeta):
         url = f"sqlite:///{__class__.db_path.as_posix()}"
         scheduler.add_jobstore("sqlaclhemy", url=url)
         self.__scheduler = scheduler
+        super().__init__()
 
     def run(self) -> None:
         self.__scheduler.start()

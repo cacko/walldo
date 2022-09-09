@@ -1,12 +1,13 @@
 import logging
 from queue import Queue
-import asyncio
 from wallies.core.models import Command
 from wallies.core.macos import get_screen, set_wallpapper
 from wallies.api.artwork import ArtworkFile
 from wallies.api.client import Client
 from wallies.api.models import Artwork
+from wallies.core.thread import StoppableThread
 from random import choice
+import asyncio
 
 
 class ManagerMeta(type):
@@ -19,7 +20,7 @@ class ManagerMeta(type):
         return self._instance
 
 
-class Manager(object, metaclass=ManagerMeta):
+class Manager(StoppableThread, metaclass=ManagerMeta):
 
     commander: Queue = None
     eventLoop: asyncio.AbstractEventLoop = None
@@ -32,6 +33,7 @@ class Manager(object, metaclass=ManagerMeta):
         self.eventLoop = asyncio.new_event_loop()
         self.api = Client()
         self.commander = Queue()
+        super().__init__()
 
     def start(self, app_callback):
         self.app_callback = app_callback

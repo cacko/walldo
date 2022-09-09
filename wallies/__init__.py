@@ -4,7 +4,6 @@ from wallies.ui.app import WalliesApp
 from wallies.config import app_config
 
 __name__ = "Wallies"
-__version__ = "0.1.0"
 
 logging.basicConfig(
     level=getattr(logging, environ.get("WALLIES_LOG_LEVEL", "INFO")),
