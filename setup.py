@@ -28,18 +28,27 @@ DATA_FILES = []
 OPTIONS = {
     'iconfile': 'icon.icns',
     'argv_emulation': True,
-    'plist': {
-        'LSUIElement': True,
-        'CFBundleIdentifier': f'net.cacko.{__name__.lower()}',
-        'CFBundleVersion': version()
+    "emulate_shell_environment": True,
+    "plist": {
+        "LSUIElement": True,
+        "CFBundleIdentifier": "net.cacko.wallies",
+        "CFBundleVersion": f"{version()}",
+        "LSEnvironment": dict(
+            PATH="/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin", WALLIES_LOG_LEVEL="CRITICAL",
+            LD_LIBRARY_PATH="/Users/jago/.local/lib:$LD_LIBRARY_PATH"
+        ),
     },
     'packages': [
         'rumps',
-        'dataclasses_json',
         'requests',
-        'appdir',
+        'appdirs',
         'click',
         "yaml",
+        'sqlalchemy',
+        'pydantic',
+        'apscheduler',
+        'corelog',
+        'chardet'
     ],
     "frameworks": resolve_libs(
         [
@@ -48,6 +57,7 @@ OPTIONS = {
             "libtk8.6.dylib",
             "libssl.3.dylib",
             "libcrypto.3.dylib",
+            "libsqlite3.dylib",
         ]
     ),
 }

@@ -1,5 +1,6 @@
-from enum import Enum
+from enum import StrEnum
 
-class Command(Enum):
+
+class Command(StrEnum):
     RANDOM = "random"
     QUIT = "quit"

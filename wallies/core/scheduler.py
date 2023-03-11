@@ -1,32 +1,36 @@
+import logging
+from typing import Optional
 from wallies.config import app_config
 from wallies.core.thread import StoppableThread
 from .models import Command
 from apscheduler.schedulers.blocking import BlockingScheduler
 from pathlib import Path
 from queue import Queue
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 
 class SchedulerMeta(type):
 
-    __instance: 'Scheduler' = None
-    __manager: Queue = None
+    __instance: Optional['Scheduler'] = None
+    __manager: Optional[Queue] = None
 
     def __call__(cls, *args, **kwargs):
         if not cls.__instance:
-            cls.__instance = type.call(cls, *args, **kwargs)
+            cls.__instance = type.__call__(cls, *args, **kwargs)
         return cls.__instance
 
-    def start(cls, manager: Queue) -> 'Scheduler':
-        cls().run()
+    def invoke(cls, manager: Queue) -> 'Scheduler':
+        cls.__manager = manager
+        cls().start()
         return cls()
 
     @property
-    def manager(cls) -> Queue:
+    def manager(cls) -> Optional[Queue]:
         return cls.__manager
 
     @property
     def db_path(cls) -> Path:
-        return app_config.app_dir / "scheduler.sqlite"
+        return app_config.data_dir / "scheduler.sqlite"
 
     def add_interval(cls, minutes: int):
         return cls().add_job(
@@ -45,12 +49,11 @@ class SchedulerMeta(type):
 
 class Scheduler(StoppableThread, metaclass=SchedulerMeta):
 
-    __scheduler: BlockingScheduler() = None
-
     def __init__(self):
         scheduler = BlockingScheduler()
-        url = f"sqlite:///{__class__.db_path.as_posix()}"
-        scheduler.add_jobstore("sqlaclhemy", url=url)
+        url = f"sqlite:///{Scheduler.db_path.as_posix()}"
+        logging.info(url)
+        scheduler.add_jobstore(SQLAlchemyJobStore(url=url))
         self.__scheduler = scheduler
         super().__init__()
 

@@ -1,6 +1,19 @@
 from rumps import MenuItem
-from pathlib import Path
-from enum import Enum
+from enum import Enum, StrEnum
+
+
+class Categories(StrEnum):
+    MINIMAL = "minimal"
+    ABSTRACT = "abstract"
+    MOVIES = "movies"
+    SPORT = "sport"
+    MUSIC = "music"
+    GAMES = "games"
+    CARTOON = "cartoon"
+    COLOURS = "colours"
+    FANTASY = "fantasy"
+    NATURE = "nature"
+    WHATEVER = "whatever"
 
 
 class Label(Enum):
@@ -30,7 +43,7 @@ INTERVAL_OPTIONS = [
 
 class ActionItemMeta(type):
 
-    _instances = {}
+    _instances: dict[str, 'ActionItem'] = {}
 
     def __call__(cls, name, *args, **kwds):
         if name not in cls._instances:
@@ -52,7 +65,15 @@ class ActionItemMeta(type):
 
 class ActionItem(MenuItem, metaclass=ActionItemMeta):
 
-    def __init__(self, title, callback=None, key=None, icon=None, dimensions=None, template=None):
+    def __init__(
+        self,
+        title,
+        callback=None,
+        key=None,
+        icon=None,
+        dimensions=None,
+        template=None
+    ):
         template = True
         super().__init__(title, callback, key, icon, dimensions, template)
 

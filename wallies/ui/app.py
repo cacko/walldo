@@ -1,4 +1,6 @@
+import logging
 from traceback import print_exc
+from typing import Optional
 import rumps
 from ..core.scheduler import Scheduler
 from wallies.core.thread import StoppableThread
@@ -7,14 +9,15 @@ from .menu.interval import IntervalList, Option
 from wallies.ui.models import INTERVAL_OPTIONS, ActionItem, Icon, Label
 from wallies.core.models import Command
 
+
 class WalliesAppMeta(type):
 
     _instance = None
 
-    def __call__(self, *args, **kwds):
-        if not self._instance:
-            self._instance = super().__call__(*args, **kwds)
-        return self._instance
+    def __call__(cls, *args, **kwds):
+        if not cls._instance:
+            cls._instance = type.__call__(cls, *args, **kwds)
+        return cls._instance
 
     def quit(cls):
         cls().terminate()
@@ -22,9 +25,9 @@ class WalliesAppMeta(type):
 
 class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
 
-    manager: Manager = None
-    __threads = []
-    __intervals: IntervalList = None
+    manager: Optional[Manager] = None
+    __threads: list[StoppableThread] = []
+    __intervals: Optional[IntervalList] = None
 
     def __init__(self):
         super(WalliesApp, self).__init__(
@@ -37,24 +40,27 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
             ],
             icon=Icon.APP.value,
             quit_button=None,
-            template=True
+            template=True,
+
+            nosleep=True,
+
         )
         self.menu.setAutoenablesItems = False
         self.__intervals = IntervalList(self, Label.INTERVAL.value)
-        self.manager = Manager()
-        t = StoppableThread(target=self.manager.start, args=[self.onManagerResult])
-        t.start()
-        self.__threads.append(t)
-        self.__threads.append(Scheduler.start(self.manager))
+        self.manager = Manager(self.onManagerResult)
+        self.manager.start()
+        self.__threads.append(self.manager)
+
+        self.__threads.append(Scheduler.invoke(self.manager.commander))
         self.__intervals.update(
-            [Option(text=t,value=v,icon=i) for v,t,i in INTERVAL_OPTIONS],
+            [Option(text=t, value=v, icon=i) for v, t, i in INTERVAL_OPTIONS],
             self.onIntervalItem
         )
-    
+        logging.info("App")
+
     @property
     def threads(self):
         return self.__threads
-
 
     @rumps.clicked(Label.RANDOM.value)
     def onRandom(self, sender):
@@ -86,7 +92,7 @@ class WalliesApp(rumps.App, metaclass=WalliesAppMeta):
         for th in self.__threads:
             try:
                 th.stop()
-            except Exception as e:
+            except Exception:
                 pass
         try:
             rumps.quit_application()

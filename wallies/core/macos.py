@@ -1,12 +1,9 @@
-#!/usr/bin/python
-
 from AppKit import (
     NSWorkspace,
     NSScreen,
     NSWorkspaceDesktopImageScalingKey,
     NSWorkspaceDesktopImageAllowClippingKey,
     NSImageScaleProportionallyUpOrDown,
-    NSImageScaleProportionallyDown
 )
 from Foundation import NSURL
 from pathlib import Path
@@ -17,7 +14,9 @@ OPTIONS = {
     NSWorkspaceDesktopImageAllowClippingKey: True
 }
 
-# optDict = NSDictionary.dictionaryWithObjects_forKeys_([NSImageScaleProportionallyUpOrDown, fillColor], [NSWorkspaceDesktopImageScalingKey,NSWorkspaceDesktopImageFillColorKey]);
+# optDict = NSDictionary.dictionaryWithObjects_forKeys_
+# ([NSImageScaleProportionallyUpOrDown, fillColor],
+# [NSWorkspaceDesktopImageScalingKey,NSWorkspaceDesktopImageFillColorKey]);
 
 # get shared workspace
 ws = NSWorkspace.sharedWorkspace()

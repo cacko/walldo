@@ -8,7 +8,8 @@ from os import environ
 def process(params, ):
     env = dict(
         environ,
-        PATH=f"{environ.get('HOME')}/.local/bin:/usr/bin:/usr/local/bin:{environ.get('PATH')}",
+        PATH=f"{environ.get('HOME')}"
+        f"/.local/bin:/usr/bin:/usr/local/bin:{environ.get('PATH')}"
     )
     proc = Popen(params, env=env)
     try:

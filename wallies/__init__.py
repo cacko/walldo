@@ -1,26 +1,31 @@
 import logging
-from os import environ
+import os
+import corelog
 from wallies.ui.app import WalliesApp
-from wallies.config import app_config
+import signal
+import sys
 
 __name__ = "Wallies"
 
-logging.basicConfig(
-    level=getattr(logging, environ.get("WALLIES_LOG_LEVEL", "INFO")),
-    format="%(filename)s %(message)s",
-    datefmt="WALLIES %H:%M:%S",
-)
+log_level = os.environ.get("WALLIES_LOG_LEVEL", "DEBUG")
+corelog.register(log_level=log_level)
 
 
 def start():
     try:
         app = WalliesApp()
-        threads = app.threads
-        print(app_config.get("ui.interval"))
+
+        def handler_stop_signals(signum, frame):
+            app.terminate()
+            sys.exit(0)
+
+        signal.signal(signal.SIGINT, handler_stop_signals)
+        signal.signal(signal.SIGTERM, handler_stop_signals)
+
         app.run()
+        app.terminate()
+        print("app ended")
     except KeyboardInterrupt:
-        for th in threads:
-            try:
-                th.stop()
-            except:
-                pass
+        pass
+    except Exception as e:
+        logging.exception(e)

@@ -3,12 +3,12 @@
 version: '3'
 
 vars:
-  PROJECT: Wallies
+  PROJECT: wallies
 
 tasks:
   default:
     cmds:
-      - conda run --live-stream -n wallies-macos python app.py
+      - mamba run --live-stream -n {{.PROJECT}} python app.py
     silent: true
 
 
@@ -24,7 +24,7 @@ tasks:
       - rm -rf build 
       - rm -rf dist
       - rm -rf .eggs
-      - conda run --live-stream -n wallies-macos python setup.py py2app
+      - mamba run --live-stream -n {{.PROJECT}} python setup.py py2app
 
   install:
     cmds:
@@ -36,7 +36,7 @@ tasks:
   export:
     desc: export env
     cmds:
-      - conda env export --no-builds  -n {{.PROJECT}} > environment.yml
+      - mamba env export --no-builds  -n {{.PROJECT}} > environment.yml
 
 
   deploy:

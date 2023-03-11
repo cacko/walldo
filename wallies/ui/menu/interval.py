@@ -1,26 +1,19 @@
-from dataclasses import dataclass
-from typing import Optional
-from dataclasses_json import dataclass_json, Undefined
+from typing import Optional, Callable
 from rumps import Menu, MenuItem
 from rumps import App
-from AppKit import NSAttributedString
-from textwrap import wrap
+from pydantic import BaseModel, Extra
 from wallies.ui.models import Icon
 
 
-@dataclass_json(undefined=Undefined.EXCLUDE)
-@dataclass
-class Option:
+class Option(BaseModel, extra=Extra.ignore):
     text: str
     value: int
     icon: Optional[Icon] = None
 
 
-@dataclass_json(undefined=Undefined.EXCLUDE)
-@dataclass
-class OptionItem:
+class OptionItem(BaseModel, extra=Extra.ignore):
     option: Option
-    callback: callable
+    callback: Callable
     dimensions: Optional[tuple[int, int]] = None
     template: bool = True
 
@@ -44,8 +37,8 @@ class OptionMenuItem(MenuItem):
 class OptionList:
 
     items: list[OptionItem] = []
-    app: App = None
-    menu_key: str = None
+    app: Optional[App] = None
+    menu_key: Optional[str] = None
 
     def __init__(self, app: App, menu_key: str) -> None:
         self.app = app
@@ -71,6 +64,7 @@ class OptionList:
 
     @property
     def menu(self) -> Menu:
+        assert self.app
         return self.app.menu.get(self.menu_key)
 
     def append(self, item: OptionItem):

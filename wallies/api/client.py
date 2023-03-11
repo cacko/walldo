@@ -1,5 +1,4 @@
 import logging
-from tkinter import END
 import requests
 from requests.exceptions import ConnectionError, ConnectTimeout
 from wallies.api.models import ENDPOINT, API_HOST, Artwork
@@ -20,4 +19,4 @@ class Client(object):
         res = self.__call(ENDPOINT.ARTWORKS.value)
         if not res:
             return []
-        return Artwork.schema().load(res, many=True)
+        return [Artwork(**x) for x in res]

@@ -4,62 +4,43 @@ from wallies.core.models import Command
 from wallies.core.macos import get_screen, set_wallpapper
 from wallies.api.artwork import ArtworkFile
 from wallies.api.client import Client
-from wallies.api.models import Artwork
 from wallies.core.thread import StoppableThread
 from random import choice
-import asyncio
+import time
 
 
-class ManagerMeta(type):
+class Manager(StoppableThread):
 
-    _instance = None
-
-    def __call__(self, *args, **kwds):
-        if not self._instance:
-            self._instance = super().__call__(*args, **kwds)
-        return self._instance
-
-
-class Manager(StoppableThread, metaclass=ManagerMeta):
-
-    commander: Queue = None
-    eventLoop: asyncio.AbstractEventLoop = None
     app_callback = None
     player_callback = None
-    api: Client = None
+    commander: Queue
     __running = False
 
-    def __init__(self) -> None:
-        self.eventLoop = asyncio.new_event_loop()
+    def __init__(self, app_callback) -> None:
         self.api = Client()
-        self.commander = Queue()
+        self.commander = Queue(maxsize=10)
+        self.app_callback = app_callback
         super().__init__()
 
-    def start(self, app_callback):
-        self.app_callback = app_callback
+    def run(self):
         self.__running = True
-        tasks = asyncio.wait(
-            [self.command_processor()])
-        self.eventLoop.run_until_complete(tasks)
-
-    async def command_processor(self):
         while self.__running:
             if self.commander.empty():
-                await asyncio.sleep(0.1)
+                time.sleep(0.1)
                 continue
-            await self.commander_runner()
+            self.commander_runner()
 
-    async def commander_runner(self):
+    def commander_runner(self):
         try:
-            cmd, payload = self.commander.get_nowait()
+            cmd, _ = self.commander.get_nowait()
             self.commander.task_done()
             match(cmd):
                 case Command.RANDOM:
-                    await self.__random()
+                    self.__random()
         except Exception as e:
             logging.exception(e)
 
-    async def __random(self):
+    def __random(self):
         artworks = self.api.artworks()
         for screen in get_screen():
             raw_src = choice(artworks).raw_src

@@ -1,17 +1,15 @@
-from enum import Enum
-from dataclasses_json import Undefined, dataclass_json
-from dataclasses import dataclass
+from enum import StrEnum
+from pydantic import BaseModel
 
 API_HOST = "https://wallies.cacko.net/api"
 
-class ENDPOINT(Enum):
+
+class ENDPOINT(StrEnum):
     ARTWORKS = "artworks.json"
 
 
-@dataclass_json(undefined=Undefined.EXCLUDE)
-@dataclass
-class Artwork:
+class Artwork(BaseModel):
     title: str
     raw_src: str
     web_uri: str
-
+    source: str
