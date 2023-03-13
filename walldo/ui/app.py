@@ -82,8 +82,8 @@ class WalldoApp(rumps.App, metaclass=WalliesAppMeta):
         self.manager.commander.put_nowait((Command.CHANGE_NOW, None))
 
     def onIntervalItem(self, sender: OptionMenuItem):
-        interval_value = sender.title
-        self.__intervals.set_enabled_value(interval_value)
+        interval_value = self.__intervals.title_to_value(sender.title)
+        self.__intervals.set_enabled_value(sender.title)
         self.manager.commander.put_nowait((Command.INTERVAL, interval_value))
 
     def onCategoryItem(self, sender: OptionMenuItem):

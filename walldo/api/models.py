@@ -1,5 +1,4 @@
 from enum import StrEnum
-from typing import Optional
 from pydantic import BaseModel, Extra
 
 
@@ -13,10 +12,3 @@ class Artwork(BaseModel, extra=Extra.ignore):
     web_uri: str
     muzei_src: str
     source: str
-
-
-class ArtworkResponse(BaseModel, extra=Extra.ignore):
-    count: int
-    next: Optional[str]
-    previous: Optional[str]
-    results: Optional[list[Artwork]]

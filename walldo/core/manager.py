@@ -9,7 +9,6 @@ from corethread import StoppableThread
 from walldo.core.timer import Timer
 from walldo.config import app_config
 import time
-from urllib.parse import urlparse, parse_qs
 
 
 class Manager(StoppableThread):
@@ -19,7 +18,6 @@ class Manager(StoppableThread):
     commander: Queue
     __running = False
     __artworks: list[Artwork] = []
-    __next_offset: int = 0
 
     def __init__(self, app_callback) -> None:
         self.api = Client()
@@ -57,19 +55,9 @@ class Manager(StoppableThread):
     def __change_now(self):
         for screen in get_screen():
             if not len(self.__artworks):
-                response = self.api.artworks(
+                self.__artworks = self.api.artworks(
                     category=app_config.ui_config.category,
-                    offset=self.__next_offset,
-                    limit=2
                 )
-                self.__artworks = response.results
-                if response.next:
-                    nu = urlparse(response.next)
-                    nup = parse_qs(nu.query)
-                    self.__next_offset = int(nup.get("offset", [0])[0])
-                else:
-                    self.__next_offset = 0
-
             raw_src = self.__artworks.pop(0).raw_src
             artwork_file = ArtworkFile(raw_src)
             artwork_path = artwork_file.path

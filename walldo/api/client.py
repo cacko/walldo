@@ -1,7 +1,7 @@
 import logging
 import requests
 from requests.exceptions import ConnectionError, ConnectTimeout
-from walldo.api.models import ENDPOINT, ArtworkResponse
+from walldo.api.models import ENDPOINT, Artwork
 from walldo.config import app_config
 from walldo.core.models import Category
 from typing import Optional
@@ -20,15 +20,11 @@ class Client(object):
 
     def artworks(
         self,
-        category: Category,
-        limit=10,
-        offset=0
-    ) -> Optional[ArtworkResponse]:
+        category: Category
+    ) -> Optional[list[Artwork]]:
         res = self.__call(ENDPOINT.ARTWORKS.value, params=dict(
-            Category__in=category.value,
-            limit=limit,
-            offset=offset
+            Category__in=category.value
         ))
         if not res:
             return None
-        return ArtworkResponse(**res)
+        return [Artwork(**x) for x in res]

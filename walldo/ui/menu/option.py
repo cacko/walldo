@@ -71,3 +71,6 @@ class OptionList:
     def set_enabled_value(self, value: str):
         for key, menu_item in self.menu.items():
             menu_item.state = int(key == value)
+
+    def title_to_value(self, title: str) -> int:
+        raise NotImplementedError
