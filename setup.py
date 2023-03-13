@@ -48,6 +48,8 @@ OPTIONS = {
         "yaml",
         'pydantic',
         'corelog',
+        'chardet',
+        'coretime'
     ],
     "frameworks": resolve_libs(
         [
