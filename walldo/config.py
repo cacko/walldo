@@ -4,12 +4,13 @@ from appdirs import user_cache_dir, user_config_dir, user_data_dir
 from yaml import Loader, load, dump
 from walldo import __name__
 from pydantic import BaseModel, Extra, Field
-from walldo.core.models import Category, INTERVAL_OPTIONS
+from walldo.core.models import Category, INTERVAL_OPTIONS, Source
 
 
 class UiConfig(BaseModel, extra=Extra.ignore):
     category: Optional[Category] = Field(default=Category.MINIMAL.value)
     interval: Optional[int] = Field(default=60)
+    source: Optional[Source] = Field(default=Source.WEB.value)
 
     @property
     def interval_text(self) -> str:
