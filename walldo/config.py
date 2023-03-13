@@ -2,14 +2,31 @@ from pathlib import Path
 from typing import Optional
 from appdirs import user_cache_dir, user_config_dir, user_data_dir
 from yaml import Loader, load, dump
-from wallies import __name__
+from walldo import __name__
 from pydantic import BaseModel, Extra, Field
-from wallies.ui.models import Categories
+from walldo.core.models import Category, INTERVAL_OPTIONS
 
 
 class UiConfig(BaseModel, extra=Extra.ignore):
-    category: Optional[Categories] = Field(default=Categories.MINIMAL)
+    category: Optional[Category] = Field(default=Category.MINIMAL.value)
     interval: Optional[int] = Field(default=60)
+
+    @property
+    def interval_text(self) -> str:
+        try:
+            res = next(filter(
+                lambda x: x[0] == self.interval, INTERVAL_OPTIONS),
+                None
+            )
+            assert res
+            return res[1]
+        except AssertionError:
+            return "Nothing"
+
+
+class APIConfig(BaseModel, extra=Extra.ignore):
+    host: Optional[str] = Field(
+        default="https://wallies.cacko.net/api")
 
 
 class app_config_meta(type):
@@ -46,6 +63,10 @@ class app_config_meta(type):
     def ui_config(cls) -> UiConfig:
         return UiConfig(**cls().getvar("ui"))
 
+    @property
+    def api_config(cls) -> APIConfig:
+        return APIConfig(**cls().getvar("api"))
+
     def is_configured(cls) -> bool:
         return True
 
@@ -65,9 +86,10 @@ class app_config(object, metaclass=app_config_meta):
 
     def init(self):
         with open(app_config.app_config, "w") as fp:
-            data = {
-                "ui": UiConfig().dict(),
-            }
+            data = dict(
+                ui=UiConfig().dict(),
+                api=APIConfig().dict()
+            )
             dump(data, fp)
 
     def getvar(self, var, *args, **kwargs):

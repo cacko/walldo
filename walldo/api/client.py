@@ -1,22 +1,26 @@
 import logging
 import requests
 from requests.exceptions import ConnectionError, ConnectTimeout
-from wallies.api.models import ENDPOINT, API_HOST, Artwork
+from walldo.api.models import ENDPOINT, Artwork
+from walldo.config import app_config
+from walldo.core.models import Category
 
 
 class Client(object):
 
     def __call(self, path, **kwargs):
         try:
-            url = f"{API_HOST}/{path}"
+            url = f"{app_config.api_config.host}/{path}"
             resp = requests.get(url=url, **kwargs)
             return resp.json()
         except (ConnectTimeout, ConnectionError) as e:
             logging.error(e)
         return None
 
-    def artworks(self) -> list[Artwork]:
-        res = self.__call(ENDPOINT.ARTWORKS.value)
+    def artworks(self, category: Category) -> list[Artwork]:
+        res = self.__call(ENDPOINT.ARTWORKS.value, params=dict(
+            Category__in=category.value
+        ))
         if not res:
             return []
         return [Artwork(**x) for x in res]

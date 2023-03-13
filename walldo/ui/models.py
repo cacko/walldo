@@ -1,44 +1,20 @@
 from rumps import MenuItem
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
-class Categories(StrEnum):
-    MINIMAL = "minimal"
-    ABSTRACT = "abstract"
-    MOVIES = "movies"
-    SPORT = "sport"
-    MUSIC = "music"
-    GAMES = "games"
-    CARTOON = "cartoon"
-    COLOURS = "colours"
-    FANTASY = "fantasy"
-    NATURE = "nature"
-    WHATEVER = "whatever"
-
-
-class Label(Enum):
+class Label(StrEnum):
     QUIT = 'Quit'
-    RANDOM = 'Random'
+    CHANGE_NOW = 'Change now'
+    CATEGORY = 'Category'
     INTERVAL = 'Auto change'
 
 
-class Icon(Enum):
+class Icon(StrEnum):
     QUIT = 'power'
-    RANDOM = 'dice'
-    APP = 'photo.stack'
+    CHANGE_NOW = 'photo.on.rectangle.angled'
+    APP = 'photo.stack.fill'
+    CATEGORY = 'list.clipboard'
     INTERVAL = "timer"
-    INTERVAL_10 = "10.circle"
-    INTERVAL_30 = "30.circle"
-    INTERVAL_60 = "hourglass.circle"
-    INTERVAL_1440 = "calendar.circle"
-
-
-INTERVAL_OPTIONS = [
-    (10, '10 minutes', Icon.INTERVAL_10),
-    (30, '30 minutes', Icon.INTERVAL_30),
-    (60, 'Each hour', Icon.INTERVAL_60),
-    (1440, 'Every day', Icon.INTERVAL_1440),
-]
 
 
 class ActionItemMeta(type):
@@ -55,19 +31,27 @@ class ActionItemMeta(type):
         return cls("quit", Label.QUIT.value, icon=Icon.QUIT.value)
 
     @property
-    def random(cls) -> 'ActionItem':
-        return cls("random", Label.RANDOM.value, icon=Icon.RANDOM.value)
+    def change_now(cls) -> 'ActionItem':
+        return cls(
+            "change_now",
+            Label.CHANGE_NOW.value,
+            icon=Icon.CHANGE_NOW.value
+        )
 
     @property
     def interval(cls) -> 'ActionItem':
         return cls("interval", Label.INTERVAL.value, icon=Icon.INTERVAL.value)
+
+    @property
+    def category(cls) -> 'ActionItem':
+        return cls("category", Label.CATEGORY.value, icon=Icon.CATEGORY.value)
 
 
 class ActionItem(MenuItem, metaclass=ActionItemMeta):
 
     def __init__(
         self,
-        title,
+        title: str,
         callback=None,
         key=None,
         icon=None,

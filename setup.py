@@ -1,8 +1,9 @@
 from setuptools import setup
-from wallies import __name__
+from walldo import __name__
 import sys
 from pathlib import Path
 import semver
+
 
 def version():
     if len(sys.argv) > 1 and sys.argv[1] == "py2app":
@@ -12,7 +13,7 @@ def version():
         nv = f"{cv.bump_patch()}"
         init.write_text(f'__version__ = "{nv}"')
         return nv
-    from wallies.version import __version__
+    from walldo.version import __version__
 
     return __version__
 
@@ -24,7 +25,7 @@ def resolve_libs(libs):
 
 
 APP = ['app.py']
-DATA_FILES = []
+DATA_FILES: list[str] = []
 OPTIONS = {
     'iconfile': 'icon.icns',
     'argv_emulation': True,
@@ -34,7 +35,8 @@ OPTIONS = {
         "CFBundleIdentifier": "net.cacko.wallies",
         "CFBundleVersion": f"{version()}",
         "LSEnvironment": dict(
-            PATH="/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin", WALLIES_LOG_LEVEL="CRITICAL",
+            PATH="/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin",
+            WALLDO_LOG_LEVEL="CRITICAL",
             LD_LIBRARY_PATH="/Users/jago/.local/lib:$LD_LIBRARY_PATH"
         ),
     },
@@ -44,11 +46,8 @@ OPTIONS = {
         'appdirs',
         'click',
         "yaml",
-        'sqlalchemy',
         'pydantic',
-        'apscheduler',
         'corelog',
-        'chardet'
     ],
     "frameworks": resolve_libs(
         [
@@ -57,7 +56,6 @@ OPTIONS = {
             "libtk8.6.dylib",
             "libssl.3.dylib",
             "libcrypto.3.dylib",
-            "libsqlite3.dylib",
         ]
     ),
 }
