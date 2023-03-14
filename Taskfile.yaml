@@ -38,6 +38,15 @@ tasks:
     cmds:
       - mamba env export --no-builds  -n {{.PROJECT}} > environment.yml
 
+  
+  dmg:
+    desc: create dmg file
+    cmds:
+      - echo "create DMG"
+      - rm -f {{.PROJECT}}-arm64.dmg
+      - ./node_modules/.bin/appdmg {{.PROJECT}}.json {{.PROJECT}}-arm64.dmg
+
+
   publish:
     desc: publish dmg file as package
     cmds:
@@ -55,5 +64,6 @@ tasks:
     cmds:
       - task: push
       - task: build
+      - tasl: dmg
       - task: publish
       - task: install
