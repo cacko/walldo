@@ -1,1 +1,1 @@
-# wallies-macos
+# walldo
