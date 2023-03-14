@@ -28,13 +28,11 @@ class Manager(StoppableThread):
 
     def run(self):
         self.__running = True
-        last_tick = int(time.time())
         while self.__running:
             if self.commander.empty():
                 time.sleep(0.1)
-                if int(time.time()) > last_tick:
-                    Timer.process()
-                    last_tick = int(time.time())
+                if Timer.process():
+                    self.__change_now()
                 continue
             self.commander_runner()
 
