@@ -25,6 +25,9 @@ tasks:
       - rm -rf dist
       - rm -rf .eggs
       - mamba run --live-stream -n {{.PROJECT}} python setup.py py2app
+      - rm -rf Applications || true
+      - mkdir Applications
+      - mv dist/*.app Applications
 
   install:
     cmds:
