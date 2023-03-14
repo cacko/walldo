@@ -38,6 +38,11 @@ tasks:
     cmds:
       - mamba env export --no-builds  -n {{.PROJECT}} > environment.yml
 
+  publish:
+    desc: publish dmg file as package
+    cmds:
+      - echo "publishing app to github"
+      - mamba run --live-stream -n {{.PROJECT}} python -m deploy {{.CLI_ARGS}}
 
   deploy:
     cmds:
@@ -45,3 +50,10 @@ tasks:
       - task: build
       - task: install
 
+  release:
+    desc: archive, dmg and upload package
+    cmds:
+      - task: push
+      - task: build
+      - task: publish
+      - task: install
