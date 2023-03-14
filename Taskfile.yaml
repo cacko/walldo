@@ -4,6 +4,7 @@ version: '3'
 
 vars:
   PROJECT: walldo
+  PROJECT_PKG: Walldp
 
 tasks:
   default:
@@ -32,8 +33,8 @@ tasks:
   install:
     cmds:
       - killall {{.Project}} || true
-      - rm -rf /Applications/*.app
-      - mv Applications/*.app /Applications
+      - rm -rf /Applications/{{.PROJECT_PKG}}.app
+      - mv Applications/{{,PROJECT_PKG}}.app /Applications
 
 
   export:
