@@ -32,8 +32,8 @@ tasks:
   install:
     cmds:
       - killall {{.Project}} || true
-      - rm -rf /Applications/{{.PROJECT}}.app
-      - mv dist/{{.PROJECT}}.app /Applications
+      - rm -rf /Applications/*.app
+      - mv Applications/*.app /Applications
 
 
   export:
