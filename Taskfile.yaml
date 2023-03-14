@@ -1,6 +1,6 @@
 # https://taskfile.dev
 
-version: '3'
+version: "3"
 
 vars:
   PROJECT: walldo
@@ -12,7 +12,6 @@ tasks:
       - mamba run --live-stream -n {{.PROJECT}} python app.py
     silent: true
 
-
   push:
     desc: commit and pushes current changes
     cmds:
@@ -22,34 +21,31 @@ tasks:
 
   build:
     cmds:
-      - rm -rf build 
+      - rm -rf build
       - rm -rf dist
       - rm -rf .eggs
       - mamba run --live-stream -n {{.PROJECT}} python setup.py py2app
       - rm -rf Applications || true
       - mkdir Applications
-      - mv dist/*.app Applications
+      - mv dist/{{.PROJECT_PKG}}.app Applications
 
   install:
     cmds:
-      - killall {{.Project}} || true
+      - killall {{.PROJECT_PKG}} || true
       - rm -rf /Applications/{{.PROJECT_PKG}}.app
-      - mv Applications/{{,PROJECT_PKG}}.app /Applications
-
+      - mv Applications/{{.PROJECT_PKG}}.app /Applications
 
   export:
     desc: export env
     cmds:
       - mamba env export --no-builds  -n {{.PROJECT}} > environment.yml
 
-  
   dmg:
     desc: create dmg file
     cmds:
       - echo "create DMG"
       - rm -f {{.PROJECT}}-arm64.dmg
       - ./node_modules/.bin/appdmg {{.PROJECT}}.json {{.PROJECT}}-arm64.dmg
-
 
   publish:
     desc: publish dmg file as package
