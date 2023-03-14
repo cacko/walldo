@@ -13,7 +13,7 @@ github_repo = environ.get("GITHUB_REPO")
 assert github_repo
 package_name = environ.get("PACKAGE_NAME")
 assert package_name
-dmg_path = dist_root / f"{package_name}-arm64.dmg"
+dmg_path = Path(__file__).parent / f"{package_name}-arm64.dmg"
 assert dmg_path.exists()
 src_root = Path(__file__).parent / package_name
 version_path = src_root / "version.py"
