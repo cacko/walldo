@@ -4,7 +4,7 @@ version: "3"
 
 vars:
   PROJECT: walldo
-  PROJECT_PKG: Walldp
+  PROJECT_PKG: Walldo
 
 tasks:
   default:
