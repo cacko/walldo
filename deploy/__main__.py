@@ -6,16 +6,16 @@ from faker import Faker
 from pathlib import Path
 
 
-dist_root = Path(__file__).parent / "dist"
+dist_root = Path(__file__).parent.parent / "dist"
 github_token = environ.get("GITHUB_TOKEN")
 assert github_token
 github_repo = environ.get("GITHUB_REPO")
 assert github_repo
 package_name = environ.get("PACKAGE_NAME")
 assert package_name
-dmg_path = Path(__file__).parent / f"{package_name}-arm64.dmg"
+dmg_path = Path(__file__).parent.parent / f"{package_name}-arm64.dmg"
 assert dmg_path.exists()
-src_root = Path(__file__).parent / package_name
+src_root = Path(__file__).parent.parent / package_name
 version_path = src_root / "version.py"
 assert version_path.exists()
 version = version_path.read_text().split("=")[-1].strip().strip('"')
