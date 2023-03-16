@@ -19,21 +19,11 @@ class Category(StrEnum):
         return [member.value for member in cls.__members__.values()]
 
 
-class Source(StrEnum):
-    WEB = "web"
-    MASHA = "masha"
-
-    @classmethod
-    def values(cls):
-        return [member.value for member in cls.__members__.values()]
-
-
 class Command(StrEnum):
     CHANGE_NOW = "change_now"
     CATEGORY = "category"
     INTERVAL = "interval"
     QUIT = "quit"
-    SOURCE = "source"
 
 
 INTERVAL_OPTIONS = [

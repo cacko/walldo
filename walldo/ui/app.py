@@ -4,7 +4,6 @@ import rumps
 from walldo.config import app_config
 from walldo.core.manager import Manager
 from walldo.ui.menu.categories import CategoryList
-from walldo.ui.menu.sources import SourceList
 from .menu.interval import IntervalList
 from .menu.option import OptionMenuItem
 from walldo.ui.models import (
@@ -42,7 +41,6 @@ class WalldoApp(rumps.App, metaclass=WalliesAppMeta):
                 ActionItem.change_now,
                 None,
                 ActionItem.category,
-                ActionItem.source,
                 ActionItem.interval,
                 None,
                 ActionItem.quit
@@ -64,18 +62,12 @@ class WalldoApp(rumps.App, metaclass=WalliesAppMeta):
             Label.CATEGORY.value,
             self.onCategoryItem
         )
-        self.__source = SourceList(
-            self,
-            Label.SOURCE.value,
-            self.onSourceItem
-        )
         self.manager = Manager(self.onManagerResult)
         self.manager.start()
         self.__threads.append(self.manager)
         logging.info("App loaded")
         self.__intervals.set_enabled_value(app_config.ui_config.interval_text)
         self.__category.set_enabled_value(app_config.ui_config.category.value)
-        self.__source.set_enabled_value(app_config.ui_config.source.value)
 
     @property
     def threads(self):
@@ -98,11 +90,6 @@ class WalldoApp(rumps.App, metaclass=WalliesAppMeta):
         category = sender.title
         self.__category.set_enabled_value(category)
         self.manager.commander.put_nowait((Command.CATEGORY, category))
-
-    def onSourceItem(self, sender: OptionMenuItem):
-        source = sender.title
-        self.__source.set_enabled_value(source)
-        self.manager.commander.put_nowait((Command.SOURCE, source))
 
     @rumps.clicked(Label.QUIT.value)
     def onQuit(self, sender):

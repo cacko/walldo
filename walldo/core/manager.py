@@ -47,8 +47,6 @@ class Manager(StoppableThread):
                     self.__interval(payload)
                 case Command.CATEGORY:
                     self.__category(payload)
-                case Command.SOURCE:
-                    self.__source(payload)
         except Exception as e:
             logging.exception(e)
 
@@ -56,8 +54,7 @@ class Manager(StoppableThread):
         for screen in get_screen():
             if not len(self.__artworks):
                 self.__artworks = self.api.artworks(
-                    category=app_config.ui_config.category,
-                    source=app_config.ui_config.source
+                    category=app_config.ui_config.category
                 )
             raw_src = self.__artworks.pop(0).raw_src
             logging.warning(self.__artworks)
@@ -75,7 +72,3 @@ class Manager(StoppableThread):
     def __category(self, category: str):
         self.__artworks = []
         app_config.set(var="ui.category", value=category.lower())
-
-    def __source(self, source: str):
-        self.__artworks = []
-        app_config.set(var="ui.source", value=source.lower())

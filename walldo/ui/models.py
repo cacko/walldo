@@ -7,7 +7,6 @@ class Label(StrEnum):
     CHANGE_NOW = 'Change now'
     CATEGORY = 'Category'
     INTERVAL = 'Auto change'
-    SOURCE = "Source"
 
 
 class Icon(StrEnum):
@@ -16,7 +15,6 @@ class Icon(StrEnum):
     APP = 'photo.stack.fill'
     CATEGORY = 'list.clipboard'
     INTERVAL = "timer"
-    SOURNCE = "hammer.fill"
 
 
 class ActionItemMeta(type):
@@ -47,10 +45,6 @@ class ActionItemMeta(type):
     @property
     def category(cls) -> 'ActionItem':
         return cls("category", Label.CATEGORY.value, icon=Icon.CATEGORY.value)
-
-    @property
-    def source(cls) -> 'ActionItem':
-        return cls("source", Label.SOURCE.value, icon=Icon.SOURNCE.value)
 
 
 class ActionItem(MenuItem, metaclass=ActionItemMeta):

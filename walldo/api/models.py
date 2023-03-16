@@ -11,4 +11,3 @@ class Artwork(BaseModel, extra=Extra.ignore):
     raw_src: str
     web_uri: str
     muzei_src: str
-    source: str
