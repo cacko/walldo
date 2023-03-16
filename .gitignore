@@ -131,3 +131,4 @@ dmypy.json
 .sdkmanrc
 Applications/
 node_modules/
+*.dmg
