@@ -1,6 +1,7 @@
 name: walldo
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - autopep8=2.0.2
   - bzip2=1.0.8
@@ -11,7 +12,7 @@ dependencies:
   - mypy=1.1.1
   - mypy_extensions=1.0.0
   - ncurses=6.3
-  - openssl=3.0.8
+  - openssl=3.1.0
   - pip=23.0.1
   - psutil=5.9.4
   - pycodestyle=2.10.0

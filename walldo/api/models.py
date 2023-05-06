@@ -3,7 +3,7 @@ from pydantic import BaseModel, Extra
 
 
 class ENDPOINT(StrEnum):
-    ARTWORKS = "artworks.json"
+    ARTWORKS = "artworks"
 
 
 class Artwork(BaseModel, extra=Extra.ignore):
