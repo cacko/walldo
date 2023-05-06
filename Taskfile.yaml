@@ -32,7 +32,7 @@ tasks:
   install:
     cmds:
       - killall {{.PROJECT_PKG}} || true
-      - rm -rf /Applications/{{.PROJECT_PKG}}.app
+      - rm -rf /Applications/{{.PROJECT_PKG}}.app || true
       - mv Applications/{{.PROJECT_PKG}}.app /Applications
 
   export:
