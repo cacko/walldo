@@ -73,7 +73,7 @@ class WalldoApp(rumps.App, metaclass=WalliesAppMeta):
     def threads(self):
         return self.__threads
 
-    @rumps.events.on_menu_open
+    @rumps.timer(10)
     def menu_open(self):
         TimerItem.time_left.self_update()
 

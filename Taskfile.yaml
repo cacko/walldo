@@ -64,6 +64,6 @@ tasks:
     cmds:
       - task: push
       - task: build
-      - tasl: dmg
+      - task: dmg
       - task: publish
       - task: install
