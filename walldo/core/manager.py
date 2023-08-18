@@ -6,7 +6,7 @@ from walldo.core.macos import get_screen, set_wallpapper
 from walldo.api.artwork import ArtworkFile
 from walldo.api.client import Client
 from corethread import StoppableThread
-from walldo.core.timer import Timer
+from walldo.core.scheduler import Scheduler
 from walldo.config import app_config
 import time
 
@@ -24,6 +24,9 @@ class Manager(StoppableThread):
         self.commander = Queue(maxsize=10)
         self.app_callback = app_callback
         assert app_config.ui_config.interval
+        Scheduler.register(self.commander)
+        Scheduler.set_interval(app_config.ui_config.interval)
+        Scheduler.start()
         super().__init__()
 
     def run(self):
@@ -31,8 +34,6 @@ class Manager(StoppableThread):
         while self.__running:
             if self.commander.empty():
                 time.sleep(0.1)
-                if Timer.process():
-                    self.__change_now()
                 continue
             self.commander_runner()
 
@@ -67,7 +68,7 @@ class Manager(StoppableThread):
 
     def __interval(self, interval_value: int):
         app_config.set(var="ui.interval", value=interval_value)
-        Timer.set_interval(interval_value)
+        Scheduler.set_interval(interval_value)
 
     def __category(self, category: str):
         self.__artworks = []

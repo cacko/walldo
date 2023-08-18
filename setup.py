@@ -49,7 +49,8 @@ OPTIONS = {
         'pydantic',
         'corelog',
         'chardet',
-        'coretime'
+        'coretime',
+        "apscheduler"
     ],
     "frameworks": resolve_libs(
         [

@@ -2,7 +2,8 @@ import logging
 from typing import Optional
 from rumps import MenuItem
 from arrow import Arrow
-from walldo.core.timer import Timer
+
+from walldo.core.scheduler import Scheduler
 
 
 class TimerItemMeta(type):
@@ -32,11 +33,14 @@ class TimerItem(MenuItem, metaclass=TimerItemMeta):
         self._menuitem.setEnabled_(enabled)
 
     def get_title(cls) -> str:
-        if not Timer.enabled:
+        try:
+            next_time = Scheduler.next_time
+            assert next_time
+            logging.debug(next_time)
+            fmt = Arrow.fromdatetime(next_time).humanize(Arrow.utcnow())
+            return f"Next {fmt}"
+        except AssertionError:
             return "No autoupdate"
-        logging.debug(Timer.next_time)
-        fmt = Arrow.fromdatetime(Timer.next_time).humanize(Arrow.utcnow())
-        return f"Next {fmt}"
 
     def self_update(self):
         self.title = self.get_title()
