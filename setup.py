@@ -35,30 +35,16 @@ OPTIONS = {
         "CFBundleIdentifier": "net.cacko.wallies",
         "CFBundleVersion": f"{version()}",
         "LSEnvironment": dict(
-            PATH="/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin",
+            PATH="@executable_path/../Frameworks:/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin",
             WALLDO_LOG_LEVEL="CRITICAL",
-            LD_LIBRARY_PATH="/Users/jago/.local/lib:$LD_LIBRARY_PATH"
+            LD_LIBRARY_PATH="@executable_path/../Frameworks:/Users/jago/.local/lib:$LD_LIBRARY_PATH"
         ),
     },
-    'packages': [
-        'rumps',
-        'requests',
-        'appdirs',
-        'click',
-        "yaml",
-        'pydantic',
-        'corelog',
-        'chardet',
-        'coretime',
-        "apscheduler"
-    ],
     "frameworks": resolve_libs(
         [
-            "libffi.8.dylib",
-            "libtcl8.6.dylib",
-            "libtk8.6.dylib",
-            "libssl.3.dylib",
-            "libcrypto.3.dylib",
+            "libffi.dylib",
+            "libssl.dylib",
+            "libcrypto.dylib",
         ]
     ),
 }
@@ -67,5 +53,4 @@ setup(
     name=__name__,
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
-    setup_requires=['py2app'],
 )
