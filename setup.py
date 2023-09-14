@@ -40,6 +40,9 @@ OPTIONS = {
             LD_LIBRARY_PATH="@executable_path/../Frameworks:/Users/jago/.local/lib:$LD_LIBRARY_PATH"
         ),
     },
+    "packages": [
+        "apscheduler",
+    ],
     "frameworks": resolve_libs(
         [
             "libffi.dylib",
