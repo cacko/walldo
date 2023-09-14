@@ -23,7 +23,8 @@ class OptionItem(BaseModel, extra=Extra.ignore):
             title=self.option.text,
             callback=self.callback,
             dimensions=self.dimensions,
-            template=self.template
+            template=self.template,
+            icon=self.option.icon
         )
 
 
@@ -59,7 +60,8 @@ class OptionList:
         menu = []
         for option in options:
             item = OptionMenuItem(OptionItem(
-                option=option, callback=self.callback))
+                option=option, 
+                callback=self.callback))
             menu.append(item)
         self.menu.update(menu)
         self.menu._menuitem.setEnabled_(True)

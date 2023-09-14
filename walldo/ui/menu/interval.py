@@ -6,7 +6,7 @@ class IntervalList(OptionList):
 
     def __post_init__(self):
         self.update(
-            [Option(text=t, value=v) for v, t in INTERVAL_OPTIONS]
+            [Option(text=t, value=v, icon=i) for v, t, i in INTERVAL_OPTIONS]
         )
 
     def title_to_value(self, title: str) -> int:

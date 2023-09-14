@@ -15,6 +15,21 @@ class Icon(StrEnum):
     APP = 'photo.stack.fill'
     CATEGORY = 'list.clipboard'
     INTERVAL = "timer"
+    MINUTES_10 = "10.circle.fill"
+    MINUTES_30 = "30.circle.fill"
+    EACH_HOUR = "hourglass.circle.fill"
+    EVERY_DAY = "sunset.fill"
+    AUTO_CHANGE_OFF = "livephoto.slash"
+    CATEGORY_MINIMAL = "light.min"
+    CATEGORY_ABSTRACT = "scribble.variable"
+    CATEGORY_LANDSCAPE = "iphone.gen2.landscape"
+    CATEGORY_SPORT = "figure.disc.sports"
+    CATEGORY_GAMES = "gamecontroller"
+    CATEGORY_CARTOON = "highlighter"
+    CATEGORY_FANTASY = "highlighter"
+    CATEGORY_NATURE = "leaf.fill"
+    CATEGORY_HORROR = "eye.trianglebadge.exclamationmark"
+    CATEGORY_WHATEVER = "magazine.fill"
 
 
 class ActionItemMeta(type):

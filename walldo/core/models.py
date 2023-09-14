@@ -1,4 +1,5 @@
 from enum import StrEnum
+from walldo.ui.models import Icon
 
 
 class Category(StrEnum):
@@ -26,9 +27,9 @@ class Command(StrEnum):
 
 
 INTERVAL_OPTIONS = [
-    (10, '10 minutes'),
-    (30, '30 minutes'),
-    (60, 'Each hour'),
-    (1440, 'Every day'),
-    (-1, 'Off'),
+    (10, '10 minutes', Icon.MINUTES_10),
+    (30, '30 minutes', Icon.MINUTES_30),
+    (60, 'Each hour', Icon.EACH_HOUR),
+    (1440, 'Every day', Icon.EVERY_DAY),
+    (-1, 'Off', Icon.AUTO_CHANGE_OFF),
 ]
