@@ -28,7 +28,7 @@ APP = ['app.py']
 DATA_FILES: list[str] = []
 OPTIONS = {
     'iconfile': 'icon.icns',
-    'argv_emulation': True,
+    'argv_emulation': False,
     "emulate_shell_environment": True,
     "plist": {
         "LSUIElement": True,
