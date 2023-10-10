@@ -23,8 +23,6 @@ class Icon(StrEnum):
     CATEGORY_MINIMAL = "light.min"
     CATEGORY_ABSTRACT = "scribble.variable"
     CATEGORY_LANDSCAPE = "iphone.gen2.landscape"
-    CATEGORY_SPORT = "figure.disc.sports"
-    CATEGORY_GAMES = "gamecontroller"
     CATEGORY_CARTOON = "highlighter"
     CATEGORY_FANTASY = "highlighter"
     CATEGORY_NATURE = "leaf.fill"
