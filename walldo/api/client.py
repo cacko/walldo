@@ -24,7 +24,7 @@ class Client(object):
     ) -> Optional[list[Artwork]]:
         in_category = category.value if category != Category.WHATEVER else None
         res = self.__call(ENDPOINT.ARTWORKS.value, params=dict(
-            Category__in=in_category
+            category=in_category
         ))
         if not res:
             return None
