@@ -32,12 +32,10 @@ OPTIONS = {
     "emulate_shell_environment": True,
     "plist": {
         "LSUIElement": True,
-        "CFBundleIdentifier": "net.cacko.wallies",
+        "CFBundleIdentifier": "net.cacko.walldo",
         "CFBundleVersion": f"{version()}",
         "LSEnvironment": dict(
-            PATH="@executable_path/../Frameworks:/usr/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin",
             WALLDO_LOG_LEVEL="CRITICAL",
-            LD_LIBRARY_PATH="@executable_path/../Frameworks:/Users/jago/.local/lib:$LD_LIBRARY_PATH"
         ),
     },
     "packages": [
