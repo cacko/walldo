@@ -41,13 +41,13 @@ OPTIONS = {
     "packages": [
         "apscheduler",
     ],
-    "frameworks": resolve_libs(
-        [
-            "libffi.dylib",
-            "libssl.dylib",
-            "libcrypto.dylib",
-        ]
-    ),
+#    "frameworks": resolve_libs(
+#        [
+#            "libffi.dylib",
+#            "libssl.dylib",
+#            "libcrypto.dylib",
+#        ]
+#    ),
 }
 setup(
     app=APP,

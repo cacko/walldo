@@ -9,7 +9,7 @@ vars:
 tasks:
   default:
     cmds:
-      - mamba run --live-stream -n {{.PROJECT}} python app.py
+      - python app.py
     silent: true
 
   push:
@@ -24,7 +24,7 @@ tasks:
       - rm -rf build
       - rm -rf dist
       - rm -rf .eggs
-      - mamba run --live-stream -n {{.PROJECT}} python setup.py py2app
+      - python setup.py py2app
       - rm -rf Applications || true
       - mkdir Applications
       - mv dist/{{.PROJECT_PKG}}.app Applications
@@ -35,23 +35,19 @@ tasks:
       - rm -rf /Applications/{{.PROJECT_PKG}}.app || true
       - mv Applications/{{.PROJECT_PKG}}.app /Applications
 
-  export:
-    desc: export env
-    cmds:
-      - mamba env export --no-builds  -n {{.PROJECT}} > environment.yml
 
   dmg:
     desc: create dmg file
     cmds:
       - echo "create DMG"
       - rm -f {{.PROJECT}}-arm64.dmg
-      - ./node_modules/.bin/appdmg {{.PROJECT}}.json {{.PROJECT}}-arm64.dmg
+      - ./node_modules/.bin/appdmg {{.PROJECT}}.json {{.PROJECT}}-x64.dmg
 
   publish:
     desc: publish dmg file as package
     cmds:
       - echo "publishing app to github"
-      - mamba run --live-stream -n {{.PROJECT}} python -m deploy {{.CLI_ARGS}}
+      - python -m deploy {{.CLI_ARGS}}
 
   deploy:
     cmds:
