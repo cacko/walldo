@@ -52,7 +52,7 @@ dependencies:
       - modulegraph==0.19.5
       - modulegraph2==2.2.1
       - objectgraph==1.0.3
-      - py2app==2.0a0
+      - py2app @ git+https://github.com/ronaldoussoren/py2app@master
       - pycparser==2.21
       - pydantic==1.10.6
       - pygithub==1.59.1
