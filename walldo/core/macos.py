@@ -27,6 +27,10 @@ def get_screen():
         yield screen
 
 
+def get_num_screens():
+    return len(NSScreen.screens())
+
+
 def set_wallpapper(screen, image_path: Path):
     url = NSURL.fileURLWithPath_(image_path.as_posix())
     (result, error) = ws.setDesktopImageURL_forScreen_options_error_(

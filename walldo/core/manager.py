@@ -2,7 +2,7 @@ import logging
 from queue import Queue
 from walldo.api.models import Artwork
 from walldo.core.models import Command
-from walldo.core.macos import get_screen, set_wallpapper
+from walldo.core.macos import get_screen, set_wallpapper, get_num_screens
 from walldo.api.artwork import ArtworkFile
 from walldo.api.client import Client
 from corethread import StoppableThread
@@ -55,7 +55,8 @@ class Manager(StoppableThread):
         for screen in get_screen():
             if not len(self.__artworks):
                 self.__artworks = self.api.artworks(
-                    category=app_config.ui_config.category
+                    category=app_config.ui_config.category,
+                    limit=get_num_screens()
                 )
             raw_src = self.__artworks.pop(0).raw_src
             logging.warning(self.__artworks)

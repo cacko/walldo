@@ -20,11 +20,14 @@ class Client(object):
 
     def artworks(
         self,
-        category: Category
+        category: Category,
+        limit: int = 10
     ) -> Optional[list[Artwork]]:
         in_category = category.value if category != Category.WHATEVER else None
         res = self.__call(ENDPOINT.ARTWORKS.value, params=dict(
-            category=in_category
+            category=in_category,
+            limit=limit,
+            page=-1
         ))
         if not res:
             return None
