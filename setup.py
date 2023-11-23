@@ -30,7 +30,7 @@ OPTIONS = {
     'iconfile': 'icon.icns',
     'argv_emulation': False,
     "emulate_shell_environment": True,
-    "no-strip": True,
+    "nostrip": True,
     "plist": {
         "LSUIElement": True,
         "CFBundleIdentifier": "net.cacko.walldo",
