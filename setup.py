@@ -52,6 +52,6 @@ OPTIONS = {
 setup(
     app=APP,
     name=__name__,
-    data_files=DATA_FILES,
+    # data_files=DATA_FILES,
     options={'py2app': OPTIONS},
 )
