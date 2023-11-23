@@ -24,7 +24,7 @@ tasks:
       - rm -rf build
       - rm -rf dist
       - rm -rf .eggs
-      - mamba run --live-stream -n {{.PROJECT}} python setup.py py2app
+      - mamba run --live-stream -n {{.PROJECT}} python setup.py -v py2app
       - rm -rf Applications || true
       - mkdir Applications
       - mv dist/{{.PROJECT_PKG}}.app Applications
