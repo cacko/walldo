@@ -59,7 +59,7 @@ class Manager(StoppableThread):
                     limit=get_num_screens()
                 )
             raw_src = self.__artworks.pop(0).raw_src
-            logging.warning(self.__artworks)
+            logging.info(self.__artworks)
             artwork_file = ArtworkFile(raw_src)
             artwork_path = artwork_file.path
             res, err = set_wallpapper(screen=screen, image_path=artwork_path)

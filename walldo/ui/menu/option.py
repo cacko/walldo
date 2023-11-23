@@ -1,17 +1,17 @@
 from typing import Optional, Callable
 from rumps import Menu, MenuItem
 from rumps import App
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 from walldo.ui.models import Icon
 
 
-class Option(BaseModel, extra=Extra.ignore):
+class Option(BaseModel):
     text: str
     value: int
     icon: Optional[Icon] = None
 
 
-class OptionItem(BaseModel, extra=Extra.ignore):
+class OptionItem(BaseModel):
     option: Option
     callback: Callable
     dimensions: Optional[tuple[int, int]] = None

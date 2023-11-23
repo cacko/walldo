@@ -1,13 +1,13 @@
 from pathlib import Path
 from typing import Optional
 from appdirs import user_cache_dir, user_config_dir, user_data_dir
-from yaml import Loader, load, dump
+from yaml import full_load, dump_all
 from walldo import __name__
-from pydantic import BaseModel, Extra, Field
+from pydantic import BaseModel, Field
 from walldo.core.models import Category, INTERVAL_OPTIONS
 
 
-class UiConfig(BaseModel, extra=Extra.ignore):
+class UiConfig(BaseModel):
     category: Optional[Category] = Field(default=Category.MINIMAL.value)
     interval: Optional[int] = Field(default=60)
 
@@ -24,7 +24,7 @@ class UiConfig(BaseModel, extra=Extra.ignore):
             return "Nothing"
 
 
-class APIConfig(BaseModel, extra=Extra.ignore):
+class APIConfig(BaseModel):
     host: Optional[str] = Field(
         default="https://wallies.cacko.net/api")
 
@@ -82,7 +82,7 @@ class app_config(object, metaclass=app_config_meta):
             app_config.data_dir.mkdir(parents=True, exist_ok=True)
         if not app_config.app_config.exists():
             self.init()
-        self._config = load(app_config.app_config.read_text(), Loader=Loader)
+        self._config = full_load(app_config.app_config.read_text())
 
     def init(self):
         with open(app_config.app_config, "w") as fp:
@@ -90,7 +90,7 @@ class app_config(object, metaclass=app_config_meta):
                 ui=UiConfig().dict(),
                 api=APIConfig().dict()
             )
-            dump(data, fp)
+            dump_all(documents=data, stream=fp)
 
     def getvar(self, var, *args, **kwargs):
         assert isinstance(self._config, dict)
@@ -98,7 +98,7 @@ class app_config(object, metaclass=app_config_meta):
 
     def __save(self):
         with open(app_config.app_config, "w") as fp:
-            dump(self._config, fp)
+            dump_all(documents=self._config, stream=fp)
 
     def setvar(self, var, value, *args, **kwargs):
         assert isinstance(self._config, dict)
