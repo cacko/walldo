@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Optional
 from appdirs import user_cache_dir, user_config_dir, user_data_dir
-import yaml
+from yaml import full_load, dump
+from yaml.composer import ComposerError
 from walldo import __name__
 from pydantic import BaseModel, Field
 from walldo.core.models import Category, INTERVAL_OPTIONS
@@ -81,8 +82,11 @@ class app_config(object, metaclass=app_config_meta):
         if not app_config.data_dir.exists():
             app_config.data_dir.mkdir(parents=True, exist_ok=True)
         if not app_config.app_config.exists():
+            return self.init()
+        try:
+            self._config = full_load(self.__class__.app_config.read_text())
+        except ComposerError:
             self.init()
-        self._config = yaml.full_load(self.__class__.app_config.read_text())
         print(list(self._config))
 
     def init(self):
@@ -91,7 +95,8 @@ class app_config(object, metaclass=app_config_meta):
                 ui=UiConfig().dict(),
                 api=APIConfig().dict()
             )
-            yaml.dump_all(documents=data, stream=fp)
+            dump(data, stream=fp)
+            self._config = data
 
     def getvar(self, var, *args, **kwargs):
         assert isinstance(self._config, dict)
@@ -99,7 +104,7 @@ class app_config(object, metaclass=app_config_meta):
 
     def __save(self):
         with open(app_config.app_config, "w") as fp:
-            yaml.dump_all(documents=self._config, stream=fp)
+            dump(self._config, stream=fp)
 
     def setvar(self, var, value, *args, **kwargs):
         assert isinstance(self._config, dict)
