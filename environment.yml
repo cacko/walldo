@@ -27,6 +27,7 @@ dependencies:
       - better-exceptions==0.3.3
       - certifi==2023.11.17
       - charset-normalizer==3.3.2
+      - click==8.1.7
       - colorama==0.4.6
       - corelog==0.0.12
       - corestring==0.1.22

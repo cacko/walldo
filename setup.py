@@ -24,11 +24,11 @@ def resolve_libs(libs):
     return [(root / f).as_posix() for f in libs]
 
 
-APP = ['app.py']
+APP = ["app.py"]
 DATA_FILES: list[str] = []
 OPTIONS = {
-    'iconfile': 'icon.icns',
-    'argv_emulation': False,
+    "iconfile": "icon.icns",
+    "argv_emulation": False,
     "emulate_shell_environment": True,
     "no_strip": True,
     "plist": {
@@ -39,9 +39,7 @@ OPTIONS = {
             WALLDO_LOG_LEVEL="CRITICAL",
         ),
     },
-    "packages": [
-        "apscheduler",
-    ],
+    "packages": ["apscheduler", "click"],
     "frameworks": resolve_libs(
         [
             "libffi.dylib",
@@ -53,6 +51,6 @@ OPTIONS = {
 setup(
     app=APP,
     name=__name__,
-    # data_files=DATA_FILES,
-    options={'py2app': OPTIONS},
+    data_files=DATA_FILES,
+    options={"py2app": OPTIONS},
 )
