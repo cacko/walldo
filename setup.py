@@ -3,19 +3,28 @@ from walldo import __name__
 import sys
 from pathlib import Path
 import semver
+import distutils
+from walldo.version import __version__
 
 
-def version():
-    if len(sys.argv) > 1 and sys.argv[1] == "py2app":
+class VersionCommand(distutils.cmd.Command):
+
+    description = 'increment app version'
+    user_options = [
+        ('version=', None, 'new version'),
+    ]
+
+    def initialize_options(self):
+        self.version = __version__
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
         init = Path(__file__).parent / __name__.lower() / "version.py"
-        _, v = init.read_text().split(" = ")
-        cv = semver.VersionInfo.parse(v.strip().strip('"'))
+        cv = semver.VersionInfo.parse(self.version)
         nv = f"{cv.bump_patch()}"
         init.write_text(f'__version__ = "{nv}"')
-        return nv
-    from walldo.version import __version__
-
-    return __version__
 
 
 def resolve_libs(libs):
@@ -34,7 +43,7 @@ OPTIONS = {
     "plist": {
         "LSUIElement": True,
         "CFBundleIdentifier": "net.cacko.walldo",
-        "CFBundleVersion": f"{version()}",
+        "CFBundleVersion": __version__,
         "LSEnvironment": dict(
             WALLDO_LOG_LEVEL="CRITICAL",
         ),
@@ -49,6 +58,9 @@ OPTIONS = {
     ),
 }
 setup(
+    cmdclass={
+        "version": VersionCommand,
+    },
     app=APP,
     name=__name__,
     data_files=DATA_FILES,

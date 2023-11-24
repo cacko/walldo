@@ -18,6 +18,10 @@ tasks:
       - git add .  || true
       - gcom || true
       - git push || true
+  
+  version:
+    cmds:
+      - mamba run --live-stream -n {{.PROJECT}} python setup.py -v version
 
   build:
     cmds:
@@ -55,6 +59,7 @@ tasks:
 
   deploy:
     cmds:
+      - task: version
       - task: push
       - task: build
       - task: install
@@ -62,6 +67,7 @@ tasks:
   release:
     desc: archive, dmg and upload package
     cmds:
+      - task: version
       - task: push
       - task: build
       - task: dmg
