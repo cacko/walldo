@@ -10,7 +10,7 @@ vars:
 tasks:
   default:
     cmds:
-      - mamba run --live-stream -n {{.PROJECT}} python app.py
+      - mamba run -n {{.PROJECT}} python {{.ENTRY}}
     silent: true
 
   push:
@@ -22,12 +22,12 @@ tasks:
   
   version:
     cmds:
-      - mamba run --live-stream -n {{.PROJECT}} python setup.py -v version
+      - mamba run -n {{.PROJECT}} python setup.py -v version
 
   build:
     desc: build app
     cmds:
-      - mamba run --live-stream -n {{.PROJECT}} python -m nuitka {{.ENTRY}}
+      - mamba run -n {{.PROJECT}} python -m nuitka {{.ENTRY}}
 
   install:
     cmds:
@@ -50,7 +50,7 @@ tasks:
     desc: publish dmg file as package
     cmds:
       - echo "publishing app to github"
-      - mamba run --live-stream -n {{.PROJECT}} python -m deploy {{.CLI_ARGS}}
+      - mamba run -n {{.PROJECT}} python -m deploy {{.CLI_ARGS}}
 
   deploy:
     cmds:

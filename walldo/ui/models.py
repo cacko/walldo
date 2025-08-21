@@ -11,8 +11,8 @@ class Label(StrEnum):
 
 class Icon(StrEnum):
     QUIT = 'power'
-    CHANGE_NOW = 'photo.on.rectangle.angled'
-    APP = 'photo.stack.fill'
+    CHANGE_NOW = 'play.diamond'
+    APP = 'theatermask.and.paintbrush.fill'
     CATEGORY = 'list.clipboard'
     INTERVAL = "timer"
     MINUTES_10 = "10.circle.fill"
