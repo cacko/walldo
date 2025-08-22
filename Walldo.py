@@ -3,7 +3,7 @@
 # nuitka-project: --macos-app-mode=ui-element
 # nuitka-project: --product-name=walldo
 # nuitka-project: --macos-signed-app-name=net.cacko.walldo
-# nuitka-project: --macos-sign-identity=09C16FC41F48FFF4955E803FB2AFEDEA946E6B7E
+# nuitka-project: --macos-sign-identity=4751CAA3DF53B17285571167EBD6261C5DF9E022
 # nuitka-project: --file-description=walldo
 # nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/icon.png
 # nuitka-project: --file-version="0.3.0"
