@@ -6,9 +6,9 @@
 # nuitka-project: --macos-sign-identity=5D6C94808201B324ACB57431A017780BB494D9DC
 # nuitka-project: --file-description=walldo
 # nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/icon.png
-# nuitka-project: --file-version="0.2.0"
-# nuitka-project: --product-version="0.2.0"
-# nuitka-project: --macos-app-version="0.2.0"
+# nuitka-project: --file-version="0.3.0"
+# nuitka-project: --product-version="0.3.0"
+# nuitka-project: --macos-app-version="0.3.0"
 
 
 from sys import argv
