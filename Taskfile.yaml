@@ -44,7 +44,7 @@ tasks:
     cmds:
       - echo "create DMG"
       - rm -f {{.PROJECT}}-arm64.dmg
-      - ./node_modules/.bin/appdmg {{.PROJECT}}.json {{.PROJECT}}.dmg
+      - dmgbuild -s {{.PROJECT}}.json Walldo {{.PROJECT}}.dmg
 
   publish:
     desc: publish dmg file as package
