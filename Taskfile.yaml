@@ -33,7 +33,7 @@ tasks:
     cmds:
       - killall {{.PROJECT_PKG}} || true
       - rm -rf /Applications/{{.PROJECT_PKG}}.app || true
-      - mv Applications/{{.PROJECT_PKG}}.app /Applications
+      - mv Applications/{{.PROJECT_PKG}}.app /Applications 2>/dev/null
   export:
     desc: export env
     cmds:
