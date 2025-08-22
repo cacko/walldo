@@ -131,4 +131,4 @@ dmypy.json
 .sdkmanrc
 Applications/
 node_modules/
-*.dmg
+*.dmg.DS_Store
